@@ -28,11 +28,11 @@ class LinkedList
             counter += 1
             node = node.next_node
         end
-        puts counter
+        counter
     end
    
     def head
-        puts @head.value
+        @head.value
     end
 
     def tail
@@ -40,13 +40,13 @@ class LinkedList
         until node.next_node == nil 
             node = node.next_node
         end
-        puts node.value
+        node.value
     end
 
     def at(index)
         node = @head
         index.times {node = node.next_node}
-        puts node.value
+        node.value
     end
 
     def pop
@@ -68,7 +68,7 @@ class LinkedList
                 node = node.next_node
             end
         end
-        puts found_value
+        found_value
     end
 
     def find(value)
@@ -89,9 +89,29 @@ class LinkedList
 
     def insert_at(value, index)
         node = @head
-        (index-1).times {node = node.next_node}
-        new_node = Node.new(value, node.next_node)
-        node.next_node = new_node
+        if index == 0
+            prepend(value)
+        elsif index >= size()
+            append(value)
+        else
+            (index-1).times {node = node.next_node}
+            new_node = Node.new(value, node.next_node)
+            node.next_node = new_node
+            append(new_node) if new_node.next_node.nil?
+        end
+    end
+
+    def remove_at(index)
+        node = @head
+        if index == 0
+            @head = node.next_node
+        elsif index >= size()
+            puts "Index larger than list size, no item to remove"
+        else
+            (index-1).times {node = node.next_node} 
+            after_node = node.next_node.next_node
+            node.next_node = after_node
+        end
     end
 
     def print_list
@@ -121,15 +141,16 @@ list.append(3)
 list.append(4)
 list.prepend(1)
 list.append("last")
-
 list.print_list
-list.size
-list.head
-list.tail
-list.at(2)
+puts list.size
+puts list.head
+puts list.tail
+puts list.at(2)
 list.pop
 list.print_list
-list.contains?(15)
+puts list.contains?(15)
 list.find(4)
-list.insert_at(18, 2)
+list.insert_at(18, 7)
+list.print_list
+list.remove_at(2)
 list.print_list
